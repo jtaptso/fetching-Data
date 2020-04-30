@@ -1,26 +1,31 @@
-console.log('About to fetch a rainbow');
-catchImage('rainbow')
-.then(response => {
-    console.log('Yey');
-})
-.catch(error => {
-    console.log('error');
-    console.error(error);
-}
-);
+// Making a map and tiles
+const mymap = L.map('issMap').setView([0, -0], 1);
+const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const tiles = L.tileLayer(tileUrl, {attribution});
+tiles.addTo(mymap);
 
-catchImage('earth')
-.then(response => {
-    console.log('Yey');
-})
-.catch(error => {
-    console.log('error');
-    console.error(error);
+// Making a marker with a custom icon
+const issIcon = L.icon({
+    iconUrl: 'iss200.png',
+    iconSize: [50, 32],
+    iconAnchor: [25, 16],
+});
+const marker = L.marker([0, 0], {icon : issIcon}).addTo(mymap);
+
+const url = 'https://api.wheretheiss.at/v1/satellites/25544'; 
+        
+async function getISS(){
+    const response = await fetch(url);
+    const data = await response.json();
+    const {latitude, longitude} = data;
+    marker.setLatLng([latitude, longitude]);
+    //L.marker([latitude, longitude]).addTo(mymap);
+    document.getElementById('lat').textContent = latitude;
+    document.getElementById('lon').textContent = longitude;
+    
+    console.log(latitude);
+    console.log(longitude);
 }
-);
-async function catchImage(image){
-    var imageWithEnding = image + '.jpg';
-    const response = await fetch(imageWithEnding);
-    const blob = await response.blob();
-    document.getElementById(image).src = URL.createObjectURL(blob);
-}
+
+getISS();

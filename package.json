@@ -1,0 +1,15 @@
+{
+  "name": "working-with-data",
+  "version": "1.0.0",
+  "description": "fetching data",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jules Taptso",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
